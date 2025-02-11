@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "4395dbb4-30ae-43c7-b024-292bd32ec3c4",
+		"name": "backend assessment test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40814443"
+	},
+	"item": [
+		{
+			"name": "User login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"user\", // Toggle option in login page\n\"mobile_number\":9876543210, // unique field\n\"password\":\"28102000\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/login/auth"
+			},
+			"response": []
+		},
+		{
+			"name": "User creation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"type\":true, //Toggle option in signup page\n    \"username\":\"Naveen\",\n    \"mobile_number\":9876543210, // Same mobile mobile will raise 'user already exist error'\n    \"password\":\"28102000\" // stored as hash in mysql db\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/signup/signup_auth"
+			},
+			"response": []
+		},
+		{
+			"name": "Vendor login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"vendor\", // Toggle option in login page\n\"mobile_number\":9876543210, //unique field\n\"password\":\"28102000\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/login/auth"
+			},
+			"response": []
+		},
+		{
+			"name": "Vendor creation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"type\":false, //Toggle option in sign up page\n    \"username\":\"kumar\",\n    \"shopname\":\"kumar shop\",\n    \"location\":\"Tamil nadu\",\n    \"mobile_number\":9876543210, // Same mobile mobile will raise 'user already exist error' \n    \"password\":\"28102000\" // stored as hash in mysql db\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/signup/signup_auth"
+			},
+			"response": []
+		},
+		{
+			"name": "Staff login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ //Separate login page for staff \n\"uniq_id\":\"0d3377bc-744e-42e9-ae05-18efadd758c8_Naveen\", // unique field from system_users table Eg: 0d3377bc-744e-42e9-ae05-18efadd758c8_Naveen (first create a super admin manually in database to create staffs --> create staffs only visible to super admin)\n\"password\":\"28102000\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/login/systemauth"
+			},
+			"response": []
+		},
+		{
+			"name": "Staff creation only visible to super admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"Naveen\",\n    \"password\":\"28102000\"\n}\n//Note : after staff creation api will return a uniq code credential for future login\n\n// sample response {\n   // \"success\": true,\n   // \"message\": \"Created : 4ee317a1-3ae1-42f5-bbe0-4edeffe5e003_Naveen\"\n//}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/signup/staff_signup"
+			},
+			"response": []
+		},
+		{
+			"name": "Profile details",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "//Get profile details common api call for all 3 (user,vendor,staff)\n//Test sample for a vendor \n{\n    \"type\":false, // will be automatically fetch from stored token which is encrypted\n    \"uniq_id\":\"a32dffef-c2c1-4597-8d62-35f0b419e7a4\" // will be automatically fetch from stored token which is encrypted\n    // vendor uniq id will be different pls copy paste it from a vendor table for testing purpose\n}\n\n//sample output for above\n//{\n   // \"success\": true,\n   // \"message\": \"Got the products\",\n    //\"info\": {\n       // \"name\": \"kumar\",\n       // \"shop_name\": \"kumar shop\",\n       // \"location\": \"Tamil nadu\",\n       // \"mobile_number\": 9876543210\n   // }\n//}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/backend/getdetails"
+			},
+			"response": []
+		},
+		{
+			"name": "All products for users and staffs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\":true, //Flase for vendors rest all products will be fetched from mongodb\n    \"uniq_id\":\"Anything\" // but will be fetched and filter in mongodb for vendors here no need to concern\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/backend/getproducts"
+			},
+			"response": []
+		},
+		{
+			"name": "vendor products filter base on vendors",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\":true, // will be automatically fetch from stored token False for vendors rest all products will be fetched from mongodb\n    \"uniq_id\":\"Anything\" // will be used to filter on mongodb based on vendor_uniq_id field on mongodb\n}\n\n//sample mongo document\n//backend> db.products.find({},{Image:0})\n// [\n//   {\n//     _id: ObjectId('67ab53a10590b23f689d451a'),\n//     uniq_id: 'ee25a696-78f0-458b-9c01-bc47b3403e38_Remote_car',\n//     Product_name: 'Remote car',\n//     Category: 'Toys',\n//     Old_price: '500',\n//     New_price: '480',\n//     Vendor_name: 'kumar',\n//     Vendor_shop_name: 'xyz shop',\n//     Vendor_uniq_id: 'e6fa1e22-e0d7-43d3-9a40-0b81906a2c78', filter field\n//     Scheduled_date: '2025-02-14',\n//     Expiry_date: '2025-02-21'\n//   }\n// ]\n// backend> \n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/backend/getproducts"
+			},
+			"response": []
+		},
+		{
+			"name": "user and vendor list for staffs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// sample output\n\n// {\n//     \"success\": true,\n//     \"message\": \"Got the products\",\n//     \"user_list\": {\n//         \"id\": 27,\n//         \"uniq_id\": \"8552f503-bd36-4fff-b1d4-629295005eca\",\n//         \"name\": \"Naveen\",\n//         \"mobile_number\": 9876543210,\n//         \"is_active\": 1,\n//         \"password\": \"$2a$10$5y.VHEJwQTPFaLaKYNamfuyJFYdTvM2s.u1qo52dNolh3oGM2jsZq\",\n//         \"created_on\": \"2025-02-11T15:34:07.000Z\"\n//     },\n//     \"vendor_list\": {\n//         \"id\": 7,\n//         \"uniq_id\": \"a32dffef-c2c1-4597-8d62-35f0b419e7a4\",\n//         \"name\": \"kumar\",\n//         \"shop_name\": \"kumar shop\",\n//         \"location\": \"Tamil nadu\",\n//         \"mobile_number\": 9876543210,\n//         \"is_active\": 1,\n//         \"password\": \"$2a$10$8Q27jFYEx6lZ3aj7dlOQMeRQZGe3F9fDW7ryxwys5coYB.FlD7Sa2\",\n//         \"created_on\": \"2025-02-11T15:37:42.000Z\"\n//     }\n// }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/backend/getlist_details"
+			},
+			"response": []
+		},
+		{
+			"name": "Add products by vendor and staffs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// pass the form data pls test with the frontend which is pushed to git hub you can find the repo name in the response mail.\n// sample added product in mongodb\n\n// [\n//   {\n//     _id: ObjectId('67ab53a10590b23f689d451a'),\n//     uniq_id: 'ee25a696-78f0-458b-9c01-bc47b3403e38_Remote_car',\n//     Product_name: 'Remote car',\n//     Category: 'Toys',\n//     Old_price: '500',\n//     New_price: '480',\n//     Vendor_name: 'kumar',\n//     Vendor_shop_name: 'xyz shop',\n//     Vendor_uniq_id: 'e6fa1e22-e0d7-43d3-9a40-0b81906a2c78',\n//     Scheduled_date: '2025-02-14',\n//     Expiry_date: '2025-02-21',\n//     Image: {\n//       data: Binary.createFromBase64('/9j/4AAQSkZJRgABA......,0),\n//        contentType: 'image/jpeg'\n//     }\n//   }\n\n//   }\n// ]\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/backend/addproduct"
+			},
+			"response": []
+		},
+		{
+			"name": "search product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/backend/searchproducts/ee25a696-78f0-458b-9c01-bc47b3403e38_Remote_car"
+			},
+			"response": []
+		}
+	]
+}
